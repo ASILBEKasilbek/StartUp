@@ -7,7 +7,6 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram import Bot, Dispatcher
 from aiogram.types import Message
 from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
 import asyncio
 import logging
 import sys
@@ -20,7 +19,7 @@ import database as dtb
 import os
 from dotenv import *
 
-
+load_dotenv()
 
 TOKEN = os.getenv('7501629492:AAEDjgxGKxV0DMNKu5Ms6lbYbs6FymJ4zME')
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
