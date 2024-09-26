@@ -1,35 +1,43 @@
 import sqlite3
-connection=sqlite3.connect('startup_loyiha.db')
-cursor=connection.cursor()
+
+# Ma'lumotlar bazasiga ulanish
+connection = sqlite3.connect('startup_loyiha.db')
+cursor = connection.cursor()
+
 def create_table():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS startup(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         full_name TEXT NOT NULL,
-        phone_number VARCHART(13) NOT NULL,
+        phone_number VARCHAR(13) NOT NULL,
         field TEXT NOT NULL,
         startup_loyiha TEXT NOT NULL)""")
     connection.commit()
 
-def insert_database(full_name,phone_number,field,startup_loyiha):
-    cursor.execute("""INSERT INTO startup(full_name,phone_number,field,startup_loyiha) 
-        VALUES (?,?,?,?)""", (full_name,phone_number,field,startup_loyiha))
+def insert_database(full_name, phone_number, field, startup_loyiha):
+    cursor.execute("""INSERT INTO startup(full_name, phone_number, field, startup_loyiha) 
+        VALUES (?, ?, ?, ?)""", (full_name, phone_number, field, startup_loyiha))
     connection.commit()
-def get_startup():
+
+def get_startup(connection):
+    cursor = connection.cursor()
     return cursor.execute('SELECT * FROM startup').fetchall()
+
 def delete_startup(k):
-    q=cursor.execute('DELETE FROM startup where id=?',(k))
+    cursor.execute('DELETE FROM startup WHERE id=?', (k,))
     connection.commit()
-    return q
-def update_startup(full_name,id):
-    w=cursor.execute('UPDATE startup SET age=? WHERE id=?',(full_name,id))
+
+def update_startup(full_name, id):
+    cursor.execute('UPDATE startup SET full_name=? WHERE id=?', (full_name, id))
     connection.commit()
-    return w
 
 def choose_startup(p):
-    return cursor.execute('SELECT * FROM startup WHERE id=?',(p,)).fetchone()
-create_table()
-#insert_database('ASILBEK','+998908968807','DASTURCHI','BOT YARATISH')
-#update_startup(30,8)
-#print(get_startup())
-connection.close()
+    cursor = connection.cursor()
+    return cursor.execute('SELECT * FROM startup WHERE id=?', (p,)).fetchone()
+
+# Funksiyalarni chaqirish
+# create_table()  # Agar kerak bo'lsa, jadvalni yaratish uchun faollashtiring
+# insert_database('ASILBEK', '+998908968807', 'DASTURCHI', 'BOT YARATISH')
+# update_startup('YANGI_ISM', 30)
+# print(get_startup(connection))  # connection argumentini bering
+# connection.close()
